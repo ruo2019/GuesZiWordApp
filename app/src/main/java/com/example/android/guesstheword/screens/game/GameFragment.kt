@@ -79,17 +79,17 @@ class GameFragment : Fragment() {
     /** Methods for updating the UI **/
 
     private fun updateWordText() {
-        binding.wordText.text = viewModel.word
+        binding.wordText.text = viewModel.word.value
     }
 
     private fun updateScoreText() {
-        binding.scoreText.text = viewModel.score.toString()
+        binding.scoreText.text = viewModel.score.value.toString()
     }
 
     private fun gameFinished() {
         Toast.makeText(context, "Game has finished.", Toast.LENGTH_SHORT).show()
         val action = GameFragmentDirections.actionGameToScore()
-        action.score = viewModel.score
+        action.score = viewModel.score.value?:0
         return NavHostFragment.findNavController(this).navigate(action)
     }
 
