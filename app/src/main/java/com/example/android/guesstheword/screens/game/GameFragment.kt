@@ -62,22 +62,24 @@ class GameFragment : Fragment() {
     /** Methods for button click handlers **/
 
     private fun onSkip() {
-        score--
-        nextWord()
+        GameViewModel().onSkip()
+        updateScoreText()
+        updateWordText()
     }
 
     private fun onCorrect() {
-        score++
-        nextWord()
+        GameViewModel().onCorrect()
+        updateScoreText()
+        updateWordText()
     }
 
     /** Methods for updating the UI **/
 
     private fun updateWordText() {
-        binding.wordText.text = word
+        binding.wordText.text = viewModel.word
     }
 
     private fun updateScoreText() {
-        binding.scoreText.text = score.toString()
+        binding.scoreText.text = viewModel.score.toString()
     }
 }
