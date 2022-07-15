@@ -31,37 +31,42 @@ import com.example.android.guesstheword.databinding.GameFragmentBinding
  * Fragment where the game is played
  */
 class GameFragment : Fragment() {
-    private lateinit var viewModel : GameViewModel
 
     private lateinit var binding: GameFragmentBinding
+
+    private lateinit var viewModel: GameViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
         // Inflate view and obtain an instance of the binding class
         binding = DataBindingUtil.inflate(
-                inflater,
-                R.layout.game_fragment,
-                container,
-                false
+            inflater,
+            R.layout.game_fragment,
+            container,
+            false
         )
 
         Log.i("GameFragment", "Called ViewModelProvider.get")
         viewModel = ViewModelProvider(this).get(GameViewModel::class.java)
+
+        binding.correctButton.setOnClickListener { onCorrect() }
+        binding.skipButton.setOnClickListener { onSkip() }
         updateScoreText()
         updateWordText()
         return binding.root
 
     }
 
-    /** Methods for buttons presses **/
 
-    fun onSkip() {
+    /** Methods for button click handlers **/
+
+    private fun onSkip() {
         score--
         nextWord()
     }
 
-    fun onCorrect() {
+    private fun onCorrect() {
         score++
         nextWord()
     }

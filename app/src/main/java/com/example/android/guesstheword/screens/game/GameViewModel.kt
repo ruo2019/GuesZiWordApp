@@ -4,53 +4,17 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 
 class GameViewModel : ViewModel() {
-
     // The current word
     var word = ""
-
     // The current score
     var score = 0
-
     // The list of words - the front of the list is the next word to guess
-    lateinit var wordList: MutableList<String>
-
-    init {
-        Log.i("GameViewModel", "GameViewModel created!")
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        Log.i("GameViewModel", "GameViewModel destroyed!")
-    }
-
-    /** Methods for buttons presses **/
-
-    fun onSkip() {
-        score--
-        nextWord()
-    }
-
-    fun onCorrect() {
-        score++
-        nextWord()
-    }
-
-    /**
-     * Moves to the next word in the list
-     */
-    fun nextWord() {
-        if (!wordList.isEmpty()) {
-            //Select and remove a word from the list
-            word = wordList.removeAt(0)
-        }
-        updateWordText()
-        updateScoreText()
-    }
+    private lateinit var wordList: MutableList<String>
 
     /**
      * Resets the list of words and randomizes the order
      */
-    fun resetList() {
+    private fun resetList() {
         wordList = mutableListOf(
             "queen",
             "hospital",
@@ -75,5 +39,37 @@ class GameViewModel : ViewModel() {
             "bubble"
         )
         wordList.shuffle()
+    }
+
+    init {
+        resetList()
+        nextWord()
+        Log.i("GameViewModel", "GameViewModel created!")
+    }
+    /**
+     * Moves to the next word in the list
+     */
+    private fun nextWord() {
+        if (!wordList.isEmpty()) {
+            //Select and remove a word from the list
+            word = wordList.removeAt(0)
+        }
+        updateWordText()
+        updateScoreText()
+    }
+    /** Methods for buttons presses **/
+    fun onSkip() {
+        score--
+        nextWord()
+    }
+
+    fun onCorrect() {
+        score++
+        nextWord()
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        Log.i("GameViewModel", "GameViewModel destroyed!")
     }
 }
