@@ -29,6 +29,7 @@ import com.example.android.guesstheword.databinding.GameFragmentBinding
  * Fragment where the game is played
  */
 class GameFragment : Fragment() {
+    lateinit var viewModel : GameViewModel
 
     // The current word
     private var word = ""
