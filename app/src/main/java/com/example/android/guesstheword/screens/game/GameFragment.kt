@@ -21,9 +21,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.NavHostFragment
 import com.example.android.guesstheword.R
 import com.example.android.guesstheword.databinding.GameFragmentBinding
 
@@ -37,7 +39,7 @@ class GameFragment : Fragment() {
     private lateinit var viewModel: GameViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+                              savedInstanceState: Bundle?): View {
 
         // Inflate view and obtain an instance of the binding class
         binding = DataBindingUtil.inflate(
@@ -52,6 +54,7 @@ class GameFragment : Fragment() {
 
         binding.correctButton.setOnClickListener { onCorrect() }
         binding.skipButton.setOnClickListener { onSkip() }
+        binding.endGameButton.setOnClickListener { onEndGame() }
         updateScoreText()
         updateWordText()
         return binding.root
@@ -62,13 +65,13 @@ class GameFragment : Fragment() {
     /** Methods for button click handlers **/
 
     private fun onSkip() {
-        GameViewModel().onSkip()
+        viewModel.onSkip()
         updateScoreText()
         updateWordText()
     }
 
     private fun onCorrect() {
-        GameViewModel().onCorrect()
+        viewModel.onCorrect()
         updateScoreText()
         updateWordText()
     }
@@ -81,5 +84,16 @@ class GameFragment : Fragment() {
 
     private fun updateScoreText() {
         binding.scoreText.text = viewModel.score.toString()
+    }
+
+    private fun gameFinished() {
+        Toast.makeText(context, "Game has finished.", Toast.LENGTH_SHORT).show()
+        val action = GameFragmentDirections.actionGameToScore()
+        action.score = viewModel.score
+        return NavHostFragment.findNavController(this).navigate(action)
+    }
+
+    private fun onEndGame() {
+        gameFinished()
     }
 }
