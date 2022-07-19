@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import java.sql.Time
+import kotlin.random.Random
 
 class GameViewModel : ViewModel() {
     // The current word
@@ -21,13 +22,18 @@ class GameViewModel : ViewModel() {
         get() = _score
 
     private var _currentTime = MutableLiveData<Long>()
-    val currentTime : LiveData<Long>
+    private val currentTime : LiveData<Long>
     get() = _currentTime
 
     private val timer : CountDownTimer
 
     val currentTimeString = Transformations.map(currentTime) {
         DateUtils.formatElapsedTime(it)
+    }!!
+
+    var wordHint = Transformations.map(word) {
+        val random = (1..word.value!!.length).random()
+        "Current word has " + it.length + " letters\nThe letter at position " + random + " is " + it[random-1].toUpperCase()
     }!!
 
     // The list of words - the front of the list is the next word to guess
